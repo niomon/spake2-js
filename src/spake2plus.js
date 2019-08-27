@@ -1,0 +1,56 @@
+/**
+ * ...
+ *
+ * @param {*} identityA ...
+ * @param {*} identityB ...
+ * @param {*} partialPasswords ...
+ * @param {*} suite ...
+ * @returns {*} ...
+ */
+function startA (identityA, identityB, partialPasswords, suite) {
+  return state()
+}
+
+/**
+ * ...
+ *
+ * @param {*} identityA ...
+ * @param {*} identityB ...
+ * @param {*} partialPassword ...
+ * @param {*} passwordVerifier ...
+ * @param {*} suite ...
+ * @returns {*} ...
+ */
+function startB (identityA, identityB, partialPassword, passwordVerifier, suite) {
+  return state()
+}
+
+/**
+ * ...
+ *
+ * @returns {*} ...
+ */
+function state () {
+  return {
+    getMessage () {},
+    finish () {
+      return sharedSecret()
+    }
+  }
+}
+
+/**
+ * ...
+ *
+ * @returns {*} ...
+ */
+function sharedSecret () {
+  return {
+    getConfirmation () {},
+    verify () {},
+    toBuffer () {}
+  }
+}
+
+exports.startA = startA
+exports.startB = startB

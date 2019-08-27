@@ -1,0 +1,30 @@
+{
+  "name": "spake2-js",
+  "version": "1.0.0",
+  "description": "A Javascript package for SPAKE2",
+  "main": "src/index.js",
+  "repository": "git@gitlab.com:blocksq/spake2-js.git",
+  "author": "Samuel Tang <samuel@blocksq.com>",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint src",
+    "lint-fix": "eslint src --fix",
+    "test": "jest test",
+    "doc": "documentation build src/** -f html -o doc"
+  },
+  "devDependencies": {
+    "documentation": "^12.1.1",
+    "eslint": "^6.2.1",
+    "eslint-config-standard": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsdoc": "^15.8.3",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "jest": "^24.9.0"
+  },
+  "dependencies": {
+    "elliptic": "^6.5.0",
+    "scrypt-js": "^2.0.4"
+  }
+}

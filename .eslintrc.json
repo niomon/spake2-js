@@ -1,0 +1,23 @@
+{
+  "root": true,
+  "env": {
+    "node": true,
+    "browser": true,
+    "es6": true
+  },
+  "plugins": [
+    "jsdoc"
+  ],
+  "extends": [
+    "standard",
+    "eslint:recommended",
+    "plugin:jsdoc/recommended"
+  ],
+  "rules": {
+    "no-console": "off",
+    "jsdoc/require-description-complete-sentence": 1
+  },
+  "parserOptions": {
+    "ecmaVersion": 2017
+  }
+}
