@@ -24,6 +24,7 @@
     "jest": "^24.9.0"
   },
   "dependencies": {
+    "bn.js": "^5.0.0",
     "elliptic": "^6.5.0",
     "scrypt-js": "^2.0.4"
   }

@@ -1,13 +1,14 @@
-const EC = require('elliptic').ec
-const scrypt = require('scrypt-js')
-const crypto = require('crypto')
+const elliptic = require('./elliptic')
+const scrypt = require('./scrypt')
+const hash = require('./hash')
+const hmac = require('./hmac')
 
 /**
  * @typedef {object} Curve
  * @property {*} group Group.
  * @property {*} P P.
  * @property {*} p Order.
- * @property {*} H Cofactor.
+ * @property {*} h Cofactor.
  * @property {*} M M.
  * @property {*} N N.
  */
@@ -15,17 +16,17 @@ const crypto = require('crypto')
 /**
  * @typedef {object} CipherSuite
  * @property {Curve} curve Curve.
- * @property {Hash} hash Hash.
- * @property {KDF} kdf Kdf.
- * @property {MAC} mac Mac.
- * @property {MHF} mhf Mhf.
+ * @property {Function} hash Hash.
+ * @property {Function} kdf Kdf.
+ * @property {Function} mac Mac.
+ * @property {Function} mhf Mhf.
  */
 const suiteEd25519Sha256HkdfHmacScrypt = {
-  curve: new EC('curve25519'),
-  hash: crypto.createHash('sha256'),
+  curve: elliptic.Elliptic(elliptic.CURVES.ed25519),
+  hash: hash.sha256,
   kdf: 1,
-  mac: crypto.createHmac('sha256', 'a secret'), // TODO
-  mhf: scrypt
+  mac: hmac.hmacSha256,
+  mhf: scrypt.scrypt
 }
 
 /**
