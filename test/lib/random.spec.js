@@ -34,25 +34,24 @@ describe('lib/random.js', function () {
           )
         }
       })
-      // TODO: revive this test case
-      // it('under range [0, 255)', function () {
-      //   const l = new BN('0')
-      //   const r = new BN('255')
-      //   const tally = new Array(255).fill(0)
-      //   for (let j = 0; j < 65025; j++) {
-      //     const random = randomInteger(l, r).toNumber()
-      //     assert(random >= 0 && random < r)
-      //     tally[random]++
-      //   }
-      //   // tally[i] ~ N(255, 254) for i = 0, 1, ..., 254
-      //   for (let i = 0; i < 255; i++) {
-      //     assert(
-      //       255 - 80 <= tally[i] && tally[i] <= 255 + 80,
-      //       `randomInteger(${l.toString(10)}, ${r.toString(10)}) = ${i} has ${tally[i]} copies, ` +
-      //       `which should be within [${255 - 80}, ${255 + 80}]`
-      //     )
-      //   }
-      // })
+      it('under range [0, 255)', function () {
+        const l = new BN('0')
+        const r = new BN('255')
+        const tally = new Array(255).fill(0)
+        for (let j = 0; j < 65025; j++) {
+          const random = randomInteger(l, r).toNumber()
+          assert(random >= 0 && random < r)
+          tally[random]++
+        }
+        // tally[i] ~ N(255, 254) for i = 0, 1, ..., 254
+        for (let i = 0; i < 255; i++) {
+          assert(
+            255 - 80 <= tally[i] && tally[i] <= 255 + 80,
+            `randomInteger(${l.toString(10)}, ${r.toString(10)}) = ${i} has ${tally[i]} copies, ` +
+            `which should be within [${255 - 80}, ${255 + 80}]`
+          )
+        }
+      })
     })
   })
 })

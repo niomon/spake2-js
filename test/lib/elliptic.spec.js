@@ -10,6 +10,8 @@ describe('lib/elliptic.js', function () {
       // Use the internal APIs to check if the points are on the curve
       assert(ec.ec.validate(ec.M))
       assert(ec.ec.validate(ec.N))
+
+      // TODO: encode->decode = self
     })
   })
 })
