@@ -5,6 +5,7 @@ const { randomInteger } = require('./lib/random.js')
 
 /**
  * Concatenates the buffers in the format `len(buf[0]) + buf[0] + len(buf[1]) + buf[1] + ...`.
+ * Omits the buffers with `len(buf[i]) === 0`.
  *
  * @private
  * @param  {...Buffer} bufs The buffers.
@@ -13,7 +14,8 @@ const { randomInteger } = require('./lib/random.js')
 function concat (...bufs) {
   let outBuf = Buffer.from([])
   for (const buf of bufs) {
-    const bufLen = new BN(buf.length).toBuffer()
+    const bufLen = new BN(buf.length).toBuffer('le', 8)
+    if (buf.length === 0) continue
     outBuf = Buffer.concat([outBuf, bufLen, buf], outBuf.length + bufLen.length + buf.length)
   }
   return outBuf
@@ -39,26 +41,19 @@ class SPAKE2 {
 
   async startClient (clientIdentity, serverIdentity, password, salt) {
     const { options, cipherSuite } = this
-    const verifier = await this.computeVerifier(password, salt, false)
-
     const { p } = cipherSuite.curve
     const x = randomInteger(new BN('0', 10), p) // uniformly generated in [0, p)
     if (!options.plus) {
-      const w = new BN(verifier.toString('hex'), 16)
+      const w = await this._computeW(password, salt)
       return new ClientSPAKE2State({ clientIdentity, serverIdentity, w, x, options, cipherSuite })
     } else {
-      const verifierLength = verifier.length
-      const w0s = verifier.subarray(0, Math.floor(verifierLength / 2))
-      const w1s = verifier.subarray(Math.floor(verifierLength / 2))
-      const w0 = new BN(w0s.toString('hex'), 16).mod(p)
-      const w1 = new BN(w1s.toString('hex'), 16).mod(p)
+      const { w0, w1 } = await this._computeW0W1(clientIdentity, serverIdentity, password, salt)
       return new ClientSPAKE2PlusState({ clientIdentity, serverIdentity, w0, w1, x, options, cipherSuite })
     }
   }
 
   async startServer (clientIdentity, serverIdentity, verifier) {
     const { options, cipherSuite } = this
-
     const { p } = cipherSuite.curve
     const y = randomInteger(new BN('0', 10), p) // uniformly generated in [0, p)
     if (!options.plus) {
@@ -72,21 +67,42 @@ class SPAKE2 {
     }
   }
 
-  async computeVerifier (password, salt, plus) {
-    if (plus === undefined) plus = this.options.plus
-    const { cipherSuite, options } = this
-    const verifier = await cipherSuite.mhf(Buffer.from(password), Buffer.from(salt), options.mhf)
-    if (!plus) return verifier
+  async computeVerifier (password, salt, clientIdentity, serverIdentity) {
+    if (!this.options.plus) {
+      const w = await this._computeW(password, salt)
+      return Buffer.from(w.toString(16, 64), 'hex')
+    } else {
+      const { w0, w1 } = await this._computeW0W1(clientIdentity, serverIdentity, password, salt)
+      const L = this.cipherSuite.curve.P.mul(w1)
+      return {
+        w0: Buffer.from(w0.toString(16), 'hex'),
+        L: this.cipherSuite.curve.encodePoint(L)
+      }
+    }
+  }
 
+  async _computeW (password, salt) {
+    const { cipherSuite, options } = this
+    const { p } = cipherSuite.curve
+    const verifier = await cipherSuite.mhf(Buffer.from(password), Buffer.from(salt), options.mhf)
+    const w = new BN(verifier.toString('hex'), 16).mod(p)
+    return w
+  }
+
+  async _computeW0W1 (clientIdentity, serverIdentity, password, salt) {
+    const { cipherSuite, options } = this
+    const { p } = cipherSuite.curve
+    const verifier = await cipherSuite.mhf(
+      concat(Buffer.from(password), Buffer.from(clientIdentity), Buffer.from(serverIdentity)),
+      Buffer.from(salt),
+      options.mhf
+    )
     const verifierLength = verifier.length
     const w0s = verifier.subarray(0, Math.floor(verifierLength / 2))
     const w1s = verifier.subarray(Math.floor(verifierLength / 2))
-    const { P } = cipherSuite.curve
-    const L = P.mul(new BN(w1s.toString('hex'), 16))
-    return {
-      w0: w0s,
-      L: cipherSuite.curve.encodePoint(L)
-    }
+    const w0 = new BN(w0s.toString('hex'), 16).mod(p)
+    const w1 = new BN(w1s.toString('hex'), 16).mod(p)
+    return { w0, w1 }
   }
 }
 
@@ -110,16 +126,15 @@ class ClientSPAKE2State {
   }
 
   finish (incomingMessage) {
-    const { cipherSuite, options } = this
+    const { cipherSuite, options, clientIdentity, serverIdentity, T, w, x } = this
+    if (!T) throw new Error('getMessage method needs to be called before this method')
     const { curve } = cipherSuite
     const { h, N } = curve
     const S = curve.decodePoint(incomingMessage)
     if (S.mul(h).isInfinity()) throw new Error('invalid curve point')
-    const { clientIdentity, serverIdentity, T, w, x } = this
     const K = S.add(N.neg().mul(w)).mul(x)
     const TT = concat(Buffer.from(clientIdentity), Buffer.from(serverIdentity), curve.encodePoint(S), curve.encodePoint(T), curve.encodePoint(K), w.toBuffer())
-    const hashTranscript = cipherSuite.hash(TT)
-    return new ClientSharedSecret({ options, cipherSuite, transcript: TT, hashTranscript })
+    return new ClientSharedSecret({ options, cipherSuite, transcript: TT })
   }
 
   save () {
@@ -161,16 +176,15 @@ class ServerSPAKE2State {
   }
 
   finish (incomingMessage) {
-    const { options, cipherSuite } = this
+    const { options, cipherSuite, clientIdentity, serverIdentity, S, w, y } = this
+    if (!S) throw new Error('getMessage method needs to be called before this method')
     const { curve } = cipherSuite
     const { h, M } = curve
     const T = curve.decodePoint(incomingMessage)
     if (T.mul(h).isInfinity()) throw new Error('invalid curve point')
-    const { clientIdentity, serverIdentity, S, w, y } = this
     const K = T.add(M.neg().mul(w)).mul(y)
     const TT = concat(Buffer.from(clientIdentity), Buffer.from(serverIdentity), curve.encodePoint(S), curve.encodePoint(T), curve.encodePoint(K), w.toBuffer())
-    const hashTranscript = cipherSuite.hash(TT)
-    return new ServerSharedSecret({ options, cipherSuite, transcript: TT, hashTranscript })
+    return new ServerSharedSecret({ options, cipherSuite, transcript: TT })
   }
 
   save () {
@@ -188,7 +202,14 @@ class ServerSPAKE2State {
     let { suite } = options
     if (suite === undefined) suite = 'ED25519-SHA256-HKDF-HMAC-SCRYPT'
     const cipherSuite = getCipherSuite(suite)
-    return new ServerSPAKE2State({ options, y: new BN(y, 16), w: new BN(w, 16), clientIdentity, serverIdentity, cipherSuite })
+    return new ServerSPAKE2State({
+      options,
+      y: new BN(y, 16),
+      w: new BN(w, 16),
+      clientIdentity,
+      serverIdentity,
+      cipherSuite
+    })
   }
 }
 
@@ -213,17 +234,16 @@ class ClientSPAKE2PlusState {
   }
 
   finish (incomingMessage) {
-    const { options, cipherSuite } = this
+    const { options, cipherSuite, clientIdentity, serverIdentity, T, w0, w1, x } = this
+    if (!T) throw new Error('getMessage method needs to be called before this method')
     const { curve } = cipherSuite
     const { h, N } = curve
     const S = curve.decodePoint(incomingMessage)
     if (S.mul(h).isInfinity()) throw new Error('invalid curve point')
-    const { clientIdentity, serverIdentity, T, w0, w1, x } = this
     const Z = S.add(N.neg().mul(w0)).mul(x)
     const V = S.add(N.neg().mul(w0)).mul(w1)
-    const TT = concat(Buffer.from(clientIdentity), Buffer.from(serverIdentity), Buffer.from(S.encode()), Buffer.from(T.encode()), Buffer.from(Z.encode()), Buffer.from(V.encode()), w0.toBuffer())
-    const hashTranscript = cipherSuite.hash(TT)
-    return new ClientSharedSecret({ options, transcript: TT, hashTranscript, cipherSuite })
+    const TT = concat(Buffer.from(clientIdentity), Buffer.from(serverIdentity), curve.encodePoint(T), curve.encodePoint(S), curve.encodePoint(Z), curve.encodePoint(V), w0.toBuffer())
+    return new ClientSharedSecret({ options, transcript: TT, cipherSuite })
   }
 
   save () {
@@ -242,7 +262,15 @@ class ClientSPAKE2PlusState {
     let { suite } = options
     if (suite === undefined) suite = 'ED25519-SHA256-HKDF-HMAC-SCRYPT'
     const cipherSuite = getCipherSuite(suite)
-    return new ClientSPAKE2PlusState({ options, x: new BN(x, 16), w0: new BN(w0, 16), w1: new BN(w1, 16), clientIdentity, serverIdentity, cipherSuite })
+    return new ClientSPAKE2PlusState({
+      options,
+      x: new BN(x, 16),
+      w0: new BN(w0, 16),
+      w1: new BN(w1, 16),
+      clientIdentity,
+      serverIdentity,
+      cipherSuite
+    })
   }
 }
 
@@ -267,51 +295,60 @@ class ServerSPAKE2PlusState {
   }
 
   finish (incomingMessage) {
-    const { options, cipherSuite } = this
+    const { options, cipherSuite, clientIdentity, serverIdentity, S, w0, L, y } = this
+    if (!S) throw new Error('getMessage method needs to be called before this method')
     const { curve } = cipherSuite
     const { h, M } = curve
     const T = curve.decodePoint(incomingMessage)
     if (T.mul(h).isInfinity()) throw new Error('invalid curve point')
-    const { clientIdentity, serverIdentity, S, w0, L, y } = this
     const Z = T.add(M.neg().mul(w0)).mul(y)
     const V = L.mul(y)
-    const TT = concat(Buffer.from(clientIdentity), Buffer.from(serverIdentity), Buffer.from(S.encode()), Buffer.from(T.encode()), Buffer.from(Z.encode()), Buffer.from(V.encode()), w0.toBuffer())
-    const hashTranscript = cipherSuite.hash(TT)
-    return new ServerSharedSecret({ options, transcript: TT, hashTranscript, cipherSuite })
+    const TT = concat(Buffer.from(clientIdentity), Buffer.from(serverIdentity), curve.encodePoint(T), curve.encodePoint(S), curve.encodePoint(Z), curve.encodePoint(V), w0.toBuffer())
+    return new ServerSharedSecret({ options, transcript: TT, cipherSuite })
   }
 
   save () {
-    const { options, x, w0, L, clientIdentity, serverIdentity } = this
+    const { options, y, w0, L, clientIdentity, serverIdentity } = this
     return {
       options,
-      x: x.toString('hex'),
+      y: y.toString('hex'),
       w0: w0.toString('hex'),
-      L, // TODO
+      L: this.cipherSuite.curve.encodePoint(L),
       clientIdentity,
       serverIdentity
     }
   }
 
-  static load ({ options, x, w0, L, clientIdentity, serverIdentity }) {
+  static load ({ options, y, w0, L, clientIdentity, serverIdentity }) {
     let { suite } = options
     if (suite === undefined) suite = 'ED25519-SHA256-HKDF-HMAC-SCRYPT'
     const cipherSuite = getCipherSuite(suite)
-    return new ClientSPAKE2PlusState({ options, x: new BN(x, 16), w0: new BN(w0, 16), L, clientIdentity, serverIdentity, cipherSuite })
+    return new ServerSPAKE2PlusState({
+      options,
+      y: new BN(y, 16),
+      w0: new BN(w0, 16),
+      L: cipherSuite.curve.decodePoint(L),
+      clientIdentity,
+      serverIdentity,
+      cipherSuite
+    })
   }
 }
 
 class ClientSharedSecret {
-  constructor ({ options, transcript, hashTranscript, cipherSuite }) {
+  constructor ({ options, transcript, cipherSuite }) {
     this.options = options
     this.cipherSuite = cipherSuite
     this.transcript = transcript
+
+    const hashTranscript = cipherSuite.hash(transcript)
     this.hashTranscript = hashTranscript
 
     const transcriptLen = hashTranscript.length
     this.Ke = hashTranscript.subarray(0, Math.floor(transcriptLen / 2))
     this.Ka = hashTranscript.subarray(Math.floor(transcriptLen / 2))
 
-    const Kc = cipherSuite.kdf('', this.Ka, 'ConfirmationKeys' || options.kdf.AAD)
+    const Kc = cipherSuite.kdf('', this.Ka, 'ConfirmationKeys' + options.kdf.AAD)
     const kcLen = Kc.length
     this.KcA = Kc.subarray(0, Math.floor(kcLen / 2))
     this.KcB = Kc.subarray(Math.floor(kcLen / 2))
@@ -335,34 +372,39 @@ class ClientSharedSecret {
   }
 
   save () {
-    const { options, transcript, hashTranscript } = this
+    const { options, transcript } = this
     return {
       options,
-      transcript,
-      hashTranscript
+      transcript: transcript.toString('hex')
     }
   }
 
-  static load ({ options, transcript, hashTranscript }) {
+  static load ({ options, transcript }) {
     let { suite } = options
     if (suite === undefined) suite = 'ED25519-SHA256-HKDF-HMAC-SCRYPT'
     const cipherSuite = getCipherSuite(suite)
-    return new ClientSharedSecret({ options, transcript, hashTranscript, cipherSuite })
+    return new ClientSharedSecret({
+      options,
+      transcript: Buffer.from(transcript, 'hex'),
+      cipherSuite
+    })
   }
 }
 
 class ServerSharedSecret {
-  constructor ({ options, transcript, hashTranscript, cipherSuite }) {
+  constructor ({ options, transcript, cipherSuite }) {
     this.options = options
     this.cipherSuite = cipherSuite
     this.transcript = transcript
+
+    const hashTranscript = cipherSuite.hash(transcript)
     this.hashTranscript = hashTranscript
 
     const transcriptLen = hashTranscript.length
     this.Ke = hashTranscript.subarray(0, Math.floor(transcriptLen / 2))
     this.Ka = hashTranscript.subarray(Math.floor(transcriptLen / 2))
 
-    const Kc = cipherSuite.kdf('', this.Ka, 'ConfirmationKeys' || options.kdf.AAD)
+    const Kc = cipherSuite.kdf('', this.Ka, 'ConfirmationKeys' + options.kdf.AAD)
     const kcLen = Kc.length
     this.KcA = Kc.subarray(0, Math.floor(kcLen / 2))
     this.KcB = Kc.subarray(Math.floor(kcLen / 2))
@@ -386,19 +428,22 @@ class ServerSharedSecret {
   }
 
   save () {
-    const { options, transcript, hashTranscript } = this
+    const { options, transcript } = this
     return {
       options,
-      transcript,
-      hashTranscript
+      transcript: transcript.toString('hex')
     }
   }
 
-  static load ({ options, transcript, hashTranscript }) {
+  static load ({ options, transcript }) {
     let { suite } = options
     if (suite === undefined) suite = 'ED25519-SHA256-HKDF-HMAC-SCRYPT'
     const cipherSuite = getCipherSuite(suite)
-    return new ServerSharedSecret({ options, transcript, hashTranscript, cipherSuite })
+    return new ServerSharedSecret({
+      options,
+      transcript: Buffer.from(transcript, 'hex'),
+      cipherSuite
+    })
   }
 }
 

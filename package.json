@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "eslint src",
     "lint-fix": "eslint src --fix",
-    "test": "jest test",
+    "test": "jest test --coverage --reporters default jest-stare",
     "doc": "documentation build src/** -f html -o doc"
   },
   "devDependencies": {
@@ -21,7 +21,8 @@
     "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "jest": "^24.9.0"
+    "jest": "^24.9.0",
+    "jest-stare": "^1.18.1"
   },
   "dependencies": {
     "bn.js": "^5.0.0",

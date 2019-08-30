@@ -1,0 +1,284 @@
+{
+  "SPAKE2": {
+    "ED25519-SHA256-HKDF-HMAC-SCRYPT": [{
+      "mhf": { "n": 16, "r": 1, "p": 1, "salt": "NaCl" },
+      "kdf": { "AAD": "" },
+      "clientIdentity": "client",
+      "serverIdentity": "server",
+      "password": "password",
+      "x": "0a2f0c0eba956d10b8c410e7d835d8511924e43d2627973278254c045e5feeb4",
+      "y": "079839d02adf0a16d5a555b6a5dd66194ba8f974f55ec11e098d1457c9bd88db",
+
+      "verifier": "0ec6b7483ed26e08802b41f4032086a017d0fbc866e3af79bf38eff06efd0bb2",
+      "messageA": "1ec4bb1a7469b3f2566d8df85b047e7dc6f60d450161a6e10a93a83c8de97bbd",
+      "messageB": "bb33d467d6f10d731451adc223694f7908255571a5dae653180b2691942550d6",
+      "transcript": "0600000000000000636c69656e7406000000000000007365727665722000000000000000bb33d467d6f10d731451adc223694f7908255571a5dae653180b2691942550d620000000000000001ec4bb1a7469b3f2566d8df85b047e7dc6f60d450161a6e10a93a83c8de97bbd200000000000000006f4eb0a057b96a63f1aff8691ef1ddda3557c468f9cc6747c3125f825153d0220000000000000000ec6b7483ed26e08802b41f4032086a017d0fbc866e3af79bf38eff06efd0bb2",
+      "hashTranscript": "812539cee0f4992eba8010bc9b47e157a49e6575fd9b83c1cd58b65b13305f35",
+      "confirmationA": "70eefd8c7ede13f1ea59c824f8d2a2ccb239b6f4c71feefae01d99919db4a2dd",
+      "confirmationB": "2f47f3317a1dc64ca4a1425293366fb0ed7cfcc2c1c7751a50ccef0d7866c766",
+      "sharedSecret": "812539cee0f4992eba8010bc9b47e157"
+    }, {
+      "mhf": { "n": 16, "r": 1, "p": 1, "salt": "NaCl" },
+      "kdf": { "AAD": "aad" },
+      "clientIdentity": "client",
+      "serverIdentity": "server",
+      "password": "password",
+      "x": "0f393b859d6962e113ba4e7ed0fa9d15215e1d13376681b67227ae10eb9ab99f",
+      "y": "0e59af15155fa16a8d3040a3f7a72a62b2245938769604d2406c315a8adeee93",
+
+      "verifier": "0ec6b7483ed26e08802b41f4032086a017d0fbc866e3af79bf38eff06efd0bb2",
+      "messageA": "2fee69692f14236eb5907753027427e0f7f885a0bbe7348389b9aad393169ebb",
+      "messageB": "7e08ba31e58dcc175ef8ec37a7739b023cda1a9761669c92adbb5fb8b676edec",
+      "transcript": "0600000000000000636c69656e74060000000000000073657276657220000000000000007e08ba31e58dcc175ef8ec37a7739b023cda1a9761669c92adbb5fb8b676edec20000000000000002fee69692f14236eb5907753027427e0f7f885a0bbe7348389b9aad393169ebb2000000000000000290f9d59c775d2ee3b03a46b420dd9b6f2fa31d1903e9de7a34867cca66f432220000000000000000ec6b7483ed26e08802b41f4032086a017d0fbc866e3af79bf38eff06efd0bb2",
+      "hashTranscript": "463ca31fb611744369d95a5ff5ecc2c5aea4dd80c5d9676af6eec8c47ca38729",
+      "confirmationA": "6017ed9fdddb20b84a1666b7d07e76025ebf24b50586e3902712cb5280694dcc",
+      "confirmationB": "adcec554b8b0ac8288119d64a5b4b4299beb1f970fb5578dbde481592345bb20",
+      "sharedSecret": "463ca31fb611744369d95a5ff5ecc2c5"
+    }, {
+      "mhf": { "n": 16, "r": 1, "p": 1, "salt": "NaCl is table salt" },
+      "kdf": { "AAD": "" },
+      "clientIdentity": "alice",
+      "serverIdentity": "example.com",
+      "password": "password is not safe",
+      "x": "0ace279d894e77f39deecf28e2b74eff14b171b9aa941927c1a0828767dcbd5e",
+      "y": "0997b74c2f533a0ef17421371eed54c8acdbb74afa9e2e3b448929c5527f9d6f",
+
+      "verifier": "0906687dd99a6a22eb3597e2b273802f562c8dbbc088b68f176defbd0585237d",
+      "messageA": "da78f0e0d0b697216b8509fbd6070774508dbdf7ebdd2ccb9a423bcbf48f3e2a",
+      "messageB": "6fd9ca3464173431b3bce162a0c6d7758a70fd379dbc0c81de0b1871b8907a7a",
+      "transcript": "0500000000000000616c6963650b000000000000006578616d706c652e636f6d20000000000000006fd9ca3464173431b3bce162a0c6d7758a70fd379dbc0c81de0b1871b8907a7a2000000000000000da78f0e0d0b697216b8509fbd6070774508dbdf7ebdd2ccb9a423bcbf48f3e2a2000000000000000012b9bb9699b9227d0c5ede8dcd289b7ede9128c8a6b6d19d0d47efce21d3da220000000000000000906687dd99a6a22eb3597e2b273802f562c8dbbc088b68f176defbd0585237d",
+      "hashTranscript": "743539a18573599f39fcc8e1bc6daa2f4b942a1f52d98778fab6f983f6e099d2",
+      "confirmationA": "20208ba973fa12732434acd15f64a415d28e3666c0b8bef6303cfcfd59b7f022",
+      "confirmationB": "5406e4e390804e70d5a96f4a7ff1f9e6a1dc8c89ff03baae0ef44f0731c1772f",
+      "sharedSecret": "743539a18573599f39fcc8e1bc6daa2f"
+    }, {
+      "mhf": { "n": 16, "r": 1, "p": 1, "salt": "NaCl" },
+      "kdf": { "AAD": "" },
+      "clientIdentity": "client",
+      "serverIdentity": "server",
+      "password": "password",
+      "x": "0433ed0152d21de3af7784c6e7dd6b91004b4ddf6a6e19e6c9de391119684cb5",
+      "y": "0509c1790d569cfd3664c7a9bb4e227fe52282aa4ca3775bdce1edb61728e3fb",
+
+      "verifier": "0ec6b7483ed26e08802b41f4032086a017d0fbc866e3af79bf38eff06efd0bb2",
+      "messageA": "91b11a9a3310aa7d898c028d9ee5ffc74f80bb1d1f5ad54332c8582c99cb0b8b",
+      "messageB": "8163423b2860917c747536b6635f693509f0f9d8c96c46df0fdc0646c0d5cca7",
+      "transcript": "0600000000000000636c69656e74060000000000000073657276657220000000000000008163423b2860917c747536b6635f693509f0f9d8c96c46df0fdc0646c0d5cca7200000000000000091b11a9a3310aa7d898c028d9ee5ffc74f80bb1d1f5ad54332c8582c99cb0b8b200000000000000090a1c9681c7411b64f9aeb00bad99ce2e978fcca545ba1918e509e2ed80f3f5220000000000000000ec6b7483ed26e08802b41f4032086a017d0fbc866e3af79bf38eff06efd0bb2",
+      "hashTranscript": "5de1bda9592cdd70be014e8bf339680b1f63f96ad96e21db370ddfb035a00bf1",
+      "confirmationA": "872f4f2076a8f717f901db06b7f6a7377c37dbc67683639ffe97004ae2faa88e",
+      "confirmationB": "a63eef1a3cab9bf490e29d711dbff88de61dd0c288d3f5d8282bf8dfa0435e57",
+      "sharedSecret": "5de1bda9592cdd70be014e8bf339680b"
+    }, {
+      "mhf": { "n": 16, "r": 1, "p": 1, "salt": "NaCl" },
+      "kdf": { "AAD": "" },
+      "clientIdentity": "",
+      "serverIdentity": "",
+      "password": "password",
+      "x": "0878139a7bb791452ee8ee402f581990d78f4afeefacdab61bfce965b743d9b1",
+      "y": "06978a123214617adf482d5255e5b8f772d166480750c3aba9d6fda8749d61cb",
+
+      "verifier": "0ec6b7483ed26e08802b41f4032086a017d0fbc866e3af79bf38eff06efd0bb2",
+      "messageA": "b11ed200f86996b3086f4834ac38e50280359680b76ee4cab613fea6464d2b23",
+      "messageB": "813563e2980f3c98868a5352b3d8bec992e1954db983ae1f40e0f238267b0a91",
+      "transcript": "2000000000000000813563e2980f3c98868a5352b3d8bec992e1954db983ae1f40e0f238267b0a912000000000000000b11ed200f86996b3086f4834ac38e50280359680b76ee4cab613fea6464d2b23200000000000000038ba533f9bbe9776df61e7963bea2a98c50b6b0657966b78685954ecd8cde89020000000000000000ec6b7483ed26e08802b41f4032086a017d0fbc866e3af79bf38eff06efd0bb2",
+      "hashTranscript": "656f68ace4b4ce3f07ee4934c55a9367550db2577f380687b5623589472f204b",
+      "confirmationA": "80bde98249e20424f255f8323015886b8b009ee2fa3dc19320b99dbb8dd1906b",
+      "confirmationB": "9c0142e40580ae10f433c4284111bf59b73c0ba55a769238d45fe31d4d6a7a4d",
+      "sharedSecret": "656f68ace4b4ce3f07ee4934c55a9367"
+    }, {
+      "mhf": { "n": 16, "r": 1, "p": 1, "salt": "NaCl" },
+      "kdf": { "AAD": "" },
+      "clientIdentity": "",
+      "serverIdentity": "",
+      "password": "password",
+      "x": "0abd70d5f13e35f5fbb8e09634fc94f33fda48776f35bf0100bc728a24f24995",
+      "y": "05603318014d4def963e5720beb790287cd6be962d25c5c60d9ebba6157ed104",
+
+      "verifier": "0ec6b7483ed26e08802b41f4032086a017d0fbc866e3af79bf38eff06efd0bb2",
+      "messageA": "b5a731ca4f875eefcd976fff54898360933f8a15c27bd79d3b1dc627b07262ba",
+      "messageB": "446e00b195462aafcd68db9fad4c4f9c36f1fc42e154de2d49c9931f43857564",
+      "transcript": "2000000000000000446e00b195462aafcd68db9fad4c4f9c36f1fc42e154de2d49c9931f438575642000000000000000b5a731ca4f875eefcd976fff54898360933f8a15c27bd79d3b1dc627b07262ba2000000000000000021d974d7734c0b86f46e0a7a6a2b1f10c3415b9fd25239e87ebf2b38310b97e20000000000000000ec6b7483ed26e08802b41f4032086a017d0fbc866e3af79bf38eff06efd0bb2",
+      "hashTranscript": "a0b3566ee4193bc091d61709eaafce351f508e192aa2db11aa2c638e7a106043",
+      "confirmationA": "d060e3881b8b72f1da62135a897decc93c19923e7e5d32f6ae90627ab98aa40b",
+      "confirmationB": "c04682f08e19de951466f7b4cbdd08ecd89d410bc2c9ef09cb2946209ca3b9b6",
+      "sharedSecret": "a0b3566ee4193bc091d61709eaafce35"
+    }, {
+      "mhf": { "n": 16, "r": 1, "p": 1, "salt": "NaCl" },
+      "kdf": { "AAD": "" },
+      "clientIdentity": "",
+      "serverIdentity": "server",
+      "password": "password",
+      "x": "0a0ac739092e13559843adab46f7363b5bcd14d861cb8a3880c721ad5b9d38f2",
+      "y": "d7e3e1a41e533cf451a4034033022a370947d247d6985d00a429dce2578bbf",
+
+      "verifier": "0ec6b7483ed26e08802b41f4032086a017d0fbc866e3af79bf38eff06efd0bb2",
+      "messageA": "662f3ee547f57bb3491e21c1ec9be152ad8123b5fa9fe855f176c019098a24eb",
+      "messageB": "35a4715a1498d8797791d997b22a1dfba284444d4455117e0f9293868799a026",
+      "transcript": "0600000000000000736572766572200000000000000035a4715a1498d8797791d997b22a1dfba284444d4455117e0f9293868799a0262000000000000000662f3ee547f57bb3491e21c1ec9be152ad8123b5fa9fe855f176c019098a24eb20000000000000002492a6f0369204719510555bd0d74cb9e738ad7e41744e5b6b5459df07e4eb2b20000000000000000ec6b7483ed26e08802b41f4032086a017d0fbc866e3af79bf38eff06efd0bb2",
+      "hashTranscript": "3164780dee9bcb3839bc8129286c03895254bf24a3db1cbcd7157922b8f8b7ed",
+      "confirmationA": "bd3e72f9c33cbedfef5af30e29ef985708560f66e2836899b1b34cf4a4c370e4",
+      "confirmationB": "e5ff936f17c30b781d995ce301548b86417fbe4a8ae81de1d5af3defd14a0521",
+      "sharedSecret": "3164780dee9bcb3839bc8129286c0389"
+    }, {
+      "mhf": { "n": 16, "r": 1, "p": 1, "salt": "NaCl is table salt" },
+      "kdf": { "AAD": "" },
+      "clientIdentity": "bob",
+      "serverIdentity": "example.com",
+      "password": "random_password",
+      "x": "b156595a311006e4acfa7a0b119b1c16e9ded5e81ac797f9a55c652971560e",
+      "y": "0e51dc74ab7b8da0f5027c9d5840a0b96449099382ea35cfc0b5ae9d29e98c43",
+
+      "verifier": "072a2bc920c9e8b369a7ddacf17c0c67057db17b1167710db8e44e353e1fadae",
+      "messageA": "18aa83ddbb9b1a6a9dc7d451360136a68bd34d1df793127ea8b6b95668c67c89",
+      "messageB": "6c819b3ecbd834af31474fee322c413b08f0379319e1c39f0632ce2121e53a5b",
+      "transcript": "0300000000000000626f620b000000000000006578616d706c652e636f6d20000000000000006c819b3ecbd834af31474fee322c413b08f0379319e1c39f0632ce2121e53a5b200000000000000018aa83ddbb9b1a6a9dc7d451360136a68bd34d1df793127ea8b6b95668c67c892000000000000000acecd55906446e909150b683855ce60722f25990081c16806aa2a771462e4dc92000000000000000072a2bc920c9e8b369a7ddacf17c0c67057db17b1167710db8e44e353e1fadae",
+      "hashTranscript": "ebdce200b56fc72ab079266471de671acd913449812f77619bcb7539492f251c",
+      "confirmationA": "406c36dd913e3a49351f7d12608ac5e2d38ce8da02a4eeaae298251eca1ea6f9",
+      "confirmationB": "776ab03452c412de99e3480dcce9244a965867a354375cd8877e0febf2b9f5ea",
+      "sharedSecret": "ebdce200b56fc72ab079266471de671a"
+    }]
+  },
+  "SPAKE2+": {
+    "ED25519-SHA256-HKDF-HMAC-SCRYPT": [{
+      "mhf": { "n": 16, "r": 1, "p": 1, "salt": "NaCl" },
+      "kdf": { "AAD": "" },
+      "clientIdentity": "client",
+      "serverIdentity": "server",
+      "password": "password",
+      "x": "0c25bbaa823381cb0e866afb88763b07387047052caf0263da8e86e0772d68d9",
+      "y": "0514267b0a1567bce219c572668f6f3f363b2ae1d8138c0cbd87ff089405db48",
+
+      "verifier": {
+        "w0": "7329b4dddcffdf5d3942a223ee58fa39",
+        "L": "3f3ecdc0aa6298b17b9bfaf4c4c047400a21f0ccfd8c223bf2f2a883edfc6ac5"
+      },
+      "messageA": "dfb851142631f2b14e0fdecd3d6924c412adec2d343e9ce46f836600795fbb88",
+      "messageB": "35529fbde5903b8fbd980ea8810bfc57a2db6ab779d71ddce2f7c34f1850afa8",
+      "transcript": "0600000000000000636c69656e7406000000000000007365727665722000000000000000dfb851142631f2b14e0fdecd3d6924c412adec2d343e9ce46f836600795fbb88200000000000000035529fbde5903b8fbd980ea8810bfc57a2db6ab779d71ddce2f7c34f1850afa8200000000000000047b4a49a10df3e2366907918ccadaebb3f5b58ccbd4b16a90f237cb5a93f99b3200000000000000016bde5a9155cb67301dba64f4cc22a064470370317e775540052fa39dec0edf310000000000000007329b4dddcffdf5d3942a223ee58fa39",
+      "hashTranscript": "6de10552d21cb1386e2ade069f88e6e89f979bdcc6ad03702b727d258b150bbb",
+      "confirmationA": "cd81b6ff06f060a200bb20d550963a43a215bd0e487740d1c8f368b4f51ebece",
+      "confirmationB": "a5c3caad4b94b360593e058128b6ed27bebc41475c5ab004403303582ef29615",
+      "sharedSecret": "6de10552d21cb1386e2ade069f88e6e8"
+    }, {
+      "mhf": { "n": 16, "r": 1, "p": 1, "salt": "NaCl" },
+      "kdf": { "AAD": "aad" },
+      "clientIdentity": "client",
+      "serverIdentity": "server",
+      "password": "password",
+      "x": "0eab6737ac4b2a621ba627674efea437174fd308ef965472933f9a4d904391ed",
+      "y": "0cbc3c2220e034f09624e09a55b2f8e60915c131adf306fa8b63e222cebeaff6",
+
+      "verifier": {
+        "w0": "7329b4dddcffdf5d3942a223ee58fa39",
+        "L": "3f3ecdc0aa6298b17b9bfaf4c4c047400a21f0ccfd8c223bf2f2a883edfc6ac5"
+      },
+      "messageA": "ed5e137954e778de1986c480a3ef99a1ea0581c34e76d2db29ba5c7c911a671a",
+      "messageB": "cab220cc93a178bfdaa3965a3f81c986dd3a8b9c31c56954d8481761a3274938",
+      "transcript": "0600000000000000636c69656e7406000000000000007365727665722000000000000000ed5e137954e778de1986c480a3ef99a1ea0581c34e76d2db29ba5c7c911a671a2000000000000000cab220cc93a178bfdaa3965a3f81c986dd3a8b9c31c56954d8481761a32749382000000000000000b1207ef933d7bbd641de10002bd33463fecde319af38a274c005a748b6490943200000000000000086533880be858ffc4180cb7a9e5ccd5f638f4312a0bd414deef9c39049b6b17d10000000000000007329b4dddcffdf5d3942a223ee58fa39",
+      "hashTranscript": "3d7c905451fd17326b8e99038670dda85e9dcc1f805cba171c744dac11f7f5bc",
+      "confirmationA": "43ebaef8b07c1c9e5294fe6ab832e70c9ead4a35b3ac65c55d859b458390bfe7",
+      "confirmationB": "56d39ee2b8fa8f5873959bb6e627808bf4d1bdd6fec4569ccb9475e39f1f7d45",
+      "sharedSecret": "3d7c905451fd17326b8e99038670dda8"
+    }, {
+      "mhf": { "n": 16, "r": 1, "p": 1, "salt": "NaCl is table salt" },
+      "kdf": { "AAD": "" },
+      "clientIdentity": "alice",
+      "serverIdentity": "example.com",
+      "password": "password is not safe",
+      "x": "0476d29ee2fffde5c5f81e53c0747f38854da6d9c4ab17bf875adeb087e5d285",
+      "y": "0c4c7d01988eec02bda43f12ce874d05c55e5d5a480deaa13ca2d11018a4c0ae",
+
+      "verifier": {
+        "w0": "cc161c70bcd9cf549d3f458bb90de65e",
+        "L": "0302008c17b6e8f90a8f6376dab98a680ff3e56ba8d4e9f32649272967ff6f1b"
+      },
+      "messageA": "1e690a932ba02ffb66e82a859e69c36eb8216e10b7bb41193497b9a209a24259",
+      "messageB": "0fa33cfbcde5ebb18e0c72a71fde88f7b2c698773a34b387fdd6090d65f12c88",
+      "transcript": "0500000000000000616c6963650b000000000000006578616d706c652e636f6d20000000000000001e690a932ba02ffb66e82a859e69c36eb8216e10b7bb41193497b9a209a2425920000000000000000fa33cfbcde5ebb18e0c72a71fde88f7b2c698773a34b387fdd6090d65f12c8820000000000000002822c3c531370f45b4d835d04999925069b64b7a852bdb5395ebb669e3f9552620000000000000005ce008a26365956cd5c9dad0d9054881671a3f68e6bde09cde6f71e24b2c6e771000000000000000cc161c70bcd9cf549d3f458bb90de65e",
+      "hashTranscript": "058b27af4e6ebc0bf6c436de20e317592dec26d2c98801d38e10aafca94da53b",
+      "confirmationA": "b317a957f2571167a8e47ae557496a59e9fd7694c28fc18d320f9cb98007108b",
+      "confirmationB": "baf0bf773a0ff9202968ce7b771060b7937dd2222d60fed615485bef226cfc6f",
+      "sharedSecret": "058b27af4e6ebc0bf6c436de20e31759"
+    }, {
+      "mhf": { "n": 16, "r": 1, "p": 1, "salt": "NaCl" },
+      "kdf": { "AAD": "" },
+      "clientIdentity": "client",
+      "serverIdentity": "server",
+      "password": "password",
+      "x": "02ed2806250d69f686fd93ebfc260c96509edd42a8a65333a6fa614b4dd96176",
+      "y": "0e0cf43ee4a529fd8c82cbfe4a3ca5783bc1f5388081d8f29698da5dc58ea1e8",
+
+      "verifier": {
+        "w0": "7329b4dddcffdf5d3942a223ee58fa39",
+        "L": "3f3ecdc0aa6298b17b9bfaf4c4c047400a21f0ccfd8c223bf2f2a883edfc6ac5"
+      },
+      "messageA": "52f19e27c9892e0bbd99d4c8581f964cb95dfae11753e6a20abcf9bcd2c45fdd",
+      "messageB": "72dc2d3e6e213fc29dd0598693a8260fa4ea1459c36baae431d7b8ba0eb80cc9",
+      "transcript": "0600000000000000636c69656e740600000000000000736572766572200000000000000052f19e27c9892e0bbd99d4c8581f964cb95dfae11753e6a20abcf9bcd2c45fdd200000000000000072dc2d3e6e213fc29dd0598693a8260fa4ea1459c36baae431d7b8ba0eb80cc9200000000000000008eb3998e62f3bfc1048b639c6ffab7cdaf817295fc3b05cd063424e0d9d6b2520000000000000000f6bf185c6fd253384846ea86e8ec94d2eead706bd204a25172c6ef1cd4cfc1610000000000000007329b4dddcffdf5d3942a223ee58fa39",
+      "hashTranscript": "e53c930d7ca9df8953b331819c38f3aeee53451aea62db312b85d95f193c1043",
+      "confirmationA": "c7b299a411b3160489547e003863f5e2bb3e58fa7b68f7474222dee9890fc3ca",
+      "confirmationB": "0602eff2fe62b8c7e46ee12132ceea52af98bb97abf696499906a6ddc96ca680",
+      "sharedSecret": "e53c930d7ca9df8953b331819c38f3ae"
+    }, {
+      "mhf": { "n": 16, "r": 1, "p": 1, "salt": "NaCl" },
+      "kdf": { "AAD": "" },
+      "clientIdentity": "",
+      "serverIdentity": "",
+      "password": "password",
+      "x": "057b05e719baf35bbb7b4f2192583b275622f5cac5a1bd8933a0db87f68c9d24",
+      "y": "0a447ee33c0a1bc2a1bbfe6cf1665216138fd4697dc8242af476d163dbabd680",
+
+      "verifier": {
+        "w0": "79a7c9adb0831ae1cf82e053694906fe",
+        "L": "96dcd6392e39ce4fa0a7a550225d68df3d70482efe802b0d1e8c2f5d46e31b10"
+      },
+      "messageA": "d18945003a5b556c4117407cdafa61ec751bf6270991d5ef1fab7afc4cb00d88",
+      "messageB": "9ac9fe30498a9e3db1809d592d306721106ccf86da077b73b20690e5f67c1b63",
+      "transcript": "2000000000000000d18945003a5b556c4117407cdafa61ec751bf6270991d5ef1fab7afc4cb00d8820000000000000009ac9fe30498a9e3db1809d592d306721106ccf86da077b73b20690e5f67c1b63200000000000000051bac80455ed6bd3dbddb747f6511d0ff3cc5266466b7d3b4b3dfd993be9da212000000000000000a287e795ae9af126a04f8ac7db3b7cd847646348178e62237d9473ad7130dc76100000000000000079a7c9adb0831ae1cf82e053694906fe",
+      "hashTranscript": "96405052b55b2f433bc5616d43f75b5fdc7ceb23a27324561ae0f8d6769fe63c",
+      "confirmationA": "8f437116ed62746c78ab3d8a6a7a455adca1d8b0bba216e0a27dce665fa54bab",
+      "confirmationB": "76b4b86250df6d363301af41b43cef8cc0e3ea9c08701ee33c4bb922c57bcc25",
+      "sharedSecret": "96405052b55b2f433bc5616d43f75b5f"
+    }, {
+      "mhf": { "n": 16, "r": 1, "p": 1, "salt": "NaCl" },
+      "kdf": { "AAD": "" },
+      "clientIdentity": "",
+      "serverIdentity": "server",
+      "password": "password",
+      "x": "0223cef038533c193655efa69c31def682330f65523e8751bdf370d2bb9deab6",
+      "y": "043b1018b37bc33644bfb55fd2c8f554aed5f8ee954272a79aa69e06a6e149c9",
+
+      "verifier": {
+        "w0": "5ccbe5c8890aebd20f1fbdf24697b412",
+        "L": "34cf076906ea4fbe51d3fa58a636e5660ef942e860ff07e3178e4be08ab5e1f1"
+      },
+      "messageA": "e29d053e2a2bc2771b11bada660b3da4aa0b285b771ab7a5777e182cf34e01c7",
+      "messageB": "bd63c3c1a060a0cb597bb93dc502df3eb614c9ebe89ff7aa6509d27aee3e00a8",
+      "transcript": "06000000000000007365727665722000000000000000e29d053e2a2bc2771b11bada660b3da4aa0b285b771ab7a5777e182cf34e01c72000000000000000bd63c3c1a060a0cb597bb93dc502df3eb614c9ebe89ff7aa6509d27aee3e00a82000000000000000d162b8618d8dda548a1ecf57cf0e232aa3aa5fd0b9cbc2764646f4c911fa0acc2000000000000000e38276bbe5c2e7949eb7a763d2da21eefb426a80fe4013958da6ec149189d4ce10000000000000005ccbe5c8890aebd20f1fbdf24697b412",
+      "hashTranscript": "17527d9f6065ef65e991a72148bf0e516742ade9b59a58d23b87f8098a5228fe",
+      "confirmationA": "55be974e2657cc285682d5ddaa4c92624bbfaeb1dcced90f62affdcc66d13e43",
+      "confirmationB": "194571f27e41c40e0c0a792e213d1c60c2b354cbe8f34fbd29f9016edef94fc2",
+      "sharedSecret": "17527d9f6065ef65e991a72148bf0e51"
+    }, {
+      "mhf": { "n": 16, "r": 1, "p": 1, "salt": "NaCl is table salt" },
+      "kdf": { "AAD": "" },
+      "clientIdentity": "bob",
+      "serverIdentity": "example.com",
+      "password": "random_password",
+      "x": "062c9aadf994d0c74ed2957b371b0e59dbcf8690d7908c628fd4baeb2e0259ce",
+      "y": "05317a3203d203bcc2fda5cf7fcd1f3973203fa6b9e68ee8f5ba3e2588d5ad4d",
+
+      "verifier": {
+        "w0": "9cd7c6c1a4b8879aad2030af18d0ab7c",
+        "L": "f8edde8179419a90194fe468cfa3a6d5ae487cff8a89ab257e2bf60bf4ebe9d9"
+      },
+      "messageA": "951994dac964d8b8f70f3922b28c7488bfeb4993ff4f5c9cc43376e14617c08c",
+      "messageB": "7898b6e97caeb4bd1a532a15fb672e6118c8c0998def5f349c66df6c70544bf5",
+      "transcript": "0300000000000000626f620b000000000000006578616d706c652e636f6d2000000000000000951994dac964d8b8f70f3922b28c7488bfeb4993ff4f5c9cc43376e14617c08c20000000000000007898b6e97caeb4bd1a532a15fb672e6118c8c0998def5f349c66df6c70544bf520000000000000002e7065762be9bb9dc5444448a63dcc3b8b175067b2cbe4480ef777a3eb637c4920000000000000001c8d5285055b3259d14e490109b95ece6eff8162b89c8378ba68419777f9df6510000000000000009cd7c6c1a4b8879aad2030af18d0ab7c",
+      "hashTranscript": "e78b6379afa3e9f1b838f876c67ee9517469863ee988139a2c733c2d1a2df103",
+      "confirmationA": "bb786755b37573559bdb855d79cc25543ff6a973b965ccc1cc046636555741fa",
+      "confirmationB": "d5eca359cb5555e904f7760ab4475798ab2af0079a13c7281bb9bf8472e5d080",
+      "sharedSecret": "e78b6379afa3e9f1b838f876c67ee951"
+    }]
+  }
+}
