@@ -193,9 +193,7 @@ describe('index.js', function () {
           const s = spake2js.spake2Plus({ suite: 'ED25519-SHA256-HKDF-HMAC-SCRYPT', mhf: { n, p, r }, kdf })
 
           const verifier = await s.computeVerifier(password, salt, clientIdentity, serverIdentity)
-          console.log('verifier.w0 =', verifier.w0.toString('hex'))
-          console.log('verifier.L =', verifier.L.toString('hex'))
-          assert.deepStrictEqual(verifier, expectedVerifier) // TODO
+          assert.deepStrictEqual(verifier, expectedVerifier)
           const oldStateA = await s.startClient(clientIdentity, serverIdentity, password, salt)
           const oldStateB = await s.startServer(clientIdentity, serverIdentity, verifier)
 
@@ -213,46 +211,37 @@ describe('index.js', function () {
 
           // A generates a message (X).
           const messageA = stateA.getMessage()
-          console.log('messageA =', messageA.toString('hex'))
-          assert.deepStrictEqual(messageA, expectedMessageA) // TODO
+          assert.deepStrictEqual(messageA, expectedMessageA)
 
           // B verifies the message from A (X) and generates a message (Y).
           const messageB = stateB.getMessage()
           const sharedSecretB = stateB.finish(messageA)
-          console.log('messageB =', messageB.toString('hex'))
           assert.deepStrictEqual(messageB, expectedMessageB)
 
           const { transcript: transcriptB, hashTranscript: hashTranscriptB } = sharedSecretB
-          console.log('transcriptB =', transcriptB.toString('hex'))
-          console.log('hashTranscriptB =', hashTranscriptB.toString('hex'))
-          assert.deepStrictEqual(transcriptB, expectedTranscript) // TODO
-          assert.deepStrictEqual(hashTranscriptB, expectedHashTranscript) // TODO
+          assert.deepStrictEqual(transcriptB, expectedTranscript)
+          assert.deepStrictEqual(hashTranscriptB, expectedHashTranscript)
 
           // A verifies the message from B (Y).
           const sharedSecretA = stateA.finish(messageB)
           const confirmationA = sharedSecretA.getConfirmation()
-          console.log('confirmationA =', confirmationA.toString('hex'))
-          assert.deepStrictEqual(confirmationA, expectedConfirmationA) // TODO
+          assert.deepStrictEqual(confirmationA, expectedConfirmationA)
 
           const { transcript: transcriptA, hashTranscript: hashTranscriptA } = sharedSecretA
-          console.log('transcriptA =', transcriptA.toString('hex'))
-          console.log('hashTranscriptA =', hashTranscriptA.toString('hex'))
-          assert.deepStrictEqual(transcriptA, expectedTranscript) // TODO
-          assert.deepStrictEqual(hashTranscriptA, expectedHashTranscript) // TODO
+          assert.deepStrictEqual(transcriptA, expectedTranscript)
+          assert.deepStrictEqual(hashTranscriptA, expectedHashTranscript)
 
           // B verifies the confirmation message (F) from A.
           assert.doesNotThrow(() => sharedSecretB.verify(confirmationA))
           const confirmationB = sharedSecretB.getConfirmation()
-          console.log('confirmationB =', confirmationB.toString('hex'))
-          assert.deepStrictEqual(confirmationB, expectedConfirmationB) // TODO
+          assert.deepStrictEqual(confirmationB, expectedConfirmationB)
 
           // A verifies the confirmation message (F) from B.
           assert.doesNotThrow(() => sharedSecretA.verify(confirmationB))
 
           // A and B have a common shared secret.
           assert.deepStrictEqual(sharedSecretA.toBuffer(), sharedSecretB.toBuffer())
-          assert.deepStrictEqual(sharedSecretA.toBuffer(), expectedSharedSecret) // TODO
-          console.log('sharedSecretA =', sharedSecretA.toString('hex'))
+          assert.deepStrictEqual(sharedSecretA.toBuffer(), expectedSharedSecret)
         }
       })
     })

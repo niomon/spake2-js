@@ -16,7 +16,7 @@ test:
     when: always
     paths:
       - coverage
-      - mochawesome-report
+      - jest-stare
   cache:
     key: ${CI_JOB_NAME}
     paths:
