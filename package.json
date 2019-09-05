@@ -1,7 +1,7 @@
 {
-  "name": "spake2-js",
+  "name": "spake2",
   "version": "1.0.0",
-  "description": "A Javascript package for SPAKE2",
+  "description": "A Javascript package for SPAKE2 and SPAKE2+",
   "main": "src/index.js",
   "repository": "git@gitlab.com:blocksq/spake2-js.git",
   "author": "Samuel Tang <samuel@blocksq.com>",
