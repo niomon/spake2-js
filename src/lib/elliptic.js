@@ -67,7 +67,7 @@ class Elliptic {
     if (this.name === 'ed25519') {
       const x = p.getX()
       const y = p.getY()
-      return x.mod(new BN(2)).mul(TWO_POW_255).add(y).toBuffer('le', 32)
+      return Buffer.from(x.mod(new BN(2)).mul(TWO_POW_255).add(y).toArrayLike(Buffer, 'le', 32))
     }
     return Buffer.from(p.encodeCompressed())
   }

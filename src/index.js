@@ -14,9 +14,12 @@ const { randomInteger } = require('./lib/random.js')
 function concat (...bufs) {
   let outBuf = Buffer.from([])
   for (const buf of bufs) {
-    const bufLen = new BN(buf.length).toBuffer('le', 8)
+    const bufLen = new BN(buf.length).toArrayLike(Buffer, 'le', 8)
     if (buf.length === 0) continue
-    outBuf = Buffer.concat([outBuf, bufLen, buf], outBuf.length + bufLen.length + buf.length)
+    outBuf = Buffer.concat(
+      [outBuf, bufLen, buf],
+      outBuf.length + bufLen.length + buf.length
+    )
   }
   return outBuf
 }
@@ -70,12 +73,12 @@ class SPAKE2 {
   async computeVerifier (password, salt, clientIdentity, serverIdentity) {
     if (!this.options.plus) {
       const w = await this._computeW(password, salt)
-      return Buffer.from(w.toString(16, 64), 'hex')
+      return Buffer.from(w.toArrayLike(Buffer, 32))
     } else {
       const { w0, w1 } = await this._computeW0W1(clientIdentity, serverIdentity, password, salt)
       const L = this.cipherSuite.curve.P.mul(w1)
       return {
-        w0: Buffer.from(w0.toString(16), 'hex'),
+        w0: Buffer.from(w0.toArrayLike(Buffer)),
         L: this.cipherSuite.curve.encodePoint(L)
       }
     }
@@ -98,8 +101,8 @@ class SPAKE2 {
       options.mhf
     )
     const verifierLength = verifier.length
-    const w0s = verifier.subarray(0, Math.floor(verifierLength / 2))
-    const w1s = verifier.subarray(Math.floor(verifierLength / 2))
+    const w0s = Buffer.from(verifier.subarray(0, verifierLength / 2))
+    const w1s = Buffer.from(verifier.subarray(verifierLength / 2))
     const w0 = new BN(w0s.toString('hex'), 16).mod(p)
     const w1 = new BN(w1s.toString('hex'), 16).mod(p)
     return { w0, w1 }
@@ -133,7 +136,7 @@ class ClientSPAKE2State {
     const S = curve.decodePoint(incomingMessage)
     if (S.mul(h).isInfinity()) throw new Error('invalid curve point')
     const K = S.add(N.neg().mul(w)).mul(x)
-    const TT = concat(Buffer.from(clientIdentity), Buffer.from(serverIdentity), curve.encodePoint(S), curve.encodePoint(T), curve.encodePoint(K), w.toBuffer())
+    const TT = concat(Buffer.from(clientIdentity), Buffer.from(serverIdentity), curve.encodePoint(S), curve.encodePoint(T), curve.encodePoint(K), w.toArrayLike(Buffer))
     return new ClientSharedSecret({ options, cipherSuite, transcript: TT })
   }
 
@@ -183,7 +186,7 @@ class ServerSPAKE2State {
     const T = curve.decodePoint(incomingMessage)
     if (T.mul(h).isInfinity()) throw new Error('invalid curve point')
     const K = T.add(M.neg().mul(w)).mul(y)
-    const TT = concat(Buffer.from(clientIdentity), Buffer.from(serverIdentity), curve.encodePoint(S), curve.encodePoint(T), curve.encodePoint(K), w.toBuffer())
+    const TT = concat(Buffer.from(clientIdentity), Buffer.from(serverIdentity), curve.encodePoint(S), curve.encodePoint(T), curve.encodePoint(K), w.toArrayLike(Buffer))
     return new ServerSharedSecret({ options, cipherSuite, transcript: TT })
   }
 
@@ -242,7 +245,7 @@ class ClientSPAKE2PlusState {
     if (S.mul(h).isInfinity()) throw new Error('invalid curve point')
     const Z = S.add(N.neg().mul(w0)).mul(x)
     const V = S.add(N.neg().mul(w0)).mul(w1)
-    const TT = concat(Buffer.from(clientIdentity), Buffer.from(serverIdentity), curve.encodePoint(T), curve.encodePoint(S), curve.encodePoint(Z), curve.encodePoint(V), w0.toBuffer())
+    const TT = concat(Buffer.from(clientIdentity), Buffer.from(serverIdentity), curve.encodePoint(T), curve.encodePoint(S), curve.encodePoint(Z), curve.encodePoint(V), w0.toArrayLike(Buffer))
     return new ClientSharedSecret({ options, transcript: TT, cipherSuite })
   }
 
@@ -303,7 +306,7 @@ class ServerSPAKE2PlusState {
     if (T.mul(h).isInfinity()) throw new Error('invalid curve point')
     const Z = T.add(M.neg().mul(w0)).mul(y)
     const V = L.mul(y)
-    const TT = concat(Buffer.from(clientIdentity), Buffer.from(serverIdentity), curve.encodePoint(T), curve.encodePoint(S), curve.encodePoint(Z), curve.encodePoint(V), w0.toBuffer())
+    const TT = concat(Buffer.from(clientIdentity), Buffer.from(serverIdentity), curve.encodePoint(T), curve.encodePoint(S), curve.encodePoint(Z), curve.encodePoint(V), w0.toArrayLike(Buffer))
     return new ServerSharedSecret({ options, transcript: TT, cipherSuite })
   }
 
@@ -356,7 +359,7 @@ class ClientSharedSecret {
 
   getConfirmation () {
     const { cipherSuite, transcript, KcA } = this
-    const F = cipherSuite.mac(transcript, KcA)
+    const F = cipherSuite.mac(Buffer.from(transcript), Buffer.from(KcA))
     return F
   }
 
