@@ -12,12 +12,14 @@ const mhf = require('./mhf.js')
  * @property {Function} mac A message authentication code function.
  * @property {Function} mhf A memory-hard hash function.
  */
-const suiteEd25519Sha256HkdfHmacScrypt = {
-  curve: new Elliptic(CURVES.ed25519),
-  hash: hash.sha256,
-  kdf: kdf.hkdfSha256,
-  mac: hmac.hmacSha256,
-  mhf: mhf.scrypt
+function suiteEd25519Sha256HkdfHmacScrypt () {
+  return {
+    curve: new Elliptic(CURVES.ed25519),
+    hash: hash.sha256,
+    kdf: kdf.hkdfSha256,
+    mac: hmac.hmacSha256,
+    mhf: mhf.scrypt
+  }
 }
 
 /**
