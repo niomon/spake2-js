@@ -3,6 +3,8 @@ const BN = require('bn.js')
 const { CipherSuite, cipherSuites } = require('./lib/cipher-suites.js')
 const { randomInteger } = require('./lib/random.js')
 
+const cipherSuitesCache = {}
+
 /**
  * Concatenates the buffers in the format `len(buf[0]) + buf[0] + len(buf[1]) + buf[1] + ...`.
  * Omits the buffers with `len(buf[i]) === 0`.
@@ -31,7 +33,11 @@ function concat (...bufs) {
  * @returns {CipherSuite} The specified cipher suite.
  */
 function getCipherSuite (name) {
-  const cipherSuite = cipherSuites[name]
+  if (name in cipherSuitesCache) {
+    return cipherSuitesCache[name]
+  }
+  const cipherSuite = cipherSuites[name]()
+  cipherSuitesCache[name] = cipherSuite
   if (!cipherSuite) throw new Error('undefined cipher suite')
   return cipherSuite
 }
