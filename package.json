@@ -25,7 +25,7 @@
     "jest-stare": "^1.18.1"
   },
   "dependencies": {
-    "bn.js": "^5.0.0",
+    "bn.js": "^4.11.8",
     "elliptic": "^6.5.0",
     "futoin-hkdf": "^1.2.0",
     "scrypt-js": "^2.0.4"
