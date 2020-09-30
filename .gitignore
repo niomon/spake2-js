@@ -89,3 +89,9 @@ typings/
 
 doc
 jest-stare
+
+# vscode configuration
+.vscode/
+
+# webpack build
+dist/

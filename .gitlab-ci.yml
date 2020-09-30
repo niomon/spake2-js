@@ -1,5 +1,6 @@
 stages:
   - test
+  - publish
 
 test:
   stage: test
@@ -33,3 +34,19 @@ audit:
       - node_modules/
   script:
     - yarn audit
+
+publish:
+  stage: publish
+  image: node:lts
+  before_script:
+    - yarn install
+  cache:
+    key: ${CI_JOB_NAME}
+    paths:
+      - node_modules/
+  script:
+    - yarn publish
+  artifacts:
+    paths:
+      - dist/spake2.min.js
+    name: 'spake2.min.js'
