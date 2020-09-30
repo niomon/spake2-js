@@ -45,7 +45,7 @@ publish:
     paths:
       - node_modules/
   script:
-    - yarn publish
+    - yarn bundle
   artifacts:
     paths:
       - dist/spake2.min.js
