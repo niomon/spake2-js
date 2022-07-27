@@ -3,7 +3,7 @@
   "version": "1.0.2",
   "description": "A Javascript package for SPAKE2 and SPAKE2+",
   "main": "src/index.js",
-  "repository": "git@gitlab.com:blocksq/spake2-js.git",
+  "repository": "git@github.com:niomon/spake2-js.git",
   "author": "Samuel Tang <samuel@blocksq.com>",
   "license": "Apache-2.0",
   "scripts": {
